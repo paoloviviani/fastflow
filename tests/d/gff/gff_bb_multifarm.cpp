@@ -45,8 +45,8 @@
 
 #include <ff/d/gff/gff.hpp>
 
-#define NWORKERS                 2
-#define STREAMLEN             32
+#define NWORKERS           2
+#define STREAMLEN          32
 #define NUMBER             4
 
 /*
@@ -205,10 +205,12 @@ int main(int argc, char * argv[]) {
 	 * A multi-ouptut channel can only carry public pointers
 	 */
 	gff::NondeterminateMerge w2c;
-	gff::OneToOne e2w_1, e2w_2;
+	std::vector<gff::OneToOne> comms;
+	comms.emplace_back(gff::OneToOne());
+	comms.emplace_back(gff::OneToOne());
 	gff::OutBundleBroadcast<gff::OneToOne> e2w;
-	e2w.add_comm(e2w_1);
-	e2w.add_comm(e2w_2);
+	e2w.add_comm(comms.at(0));
+	e2w.add_comm(comms.at(0));
 
 	/*
 	 * In this preliminary implementation, a single global network is
